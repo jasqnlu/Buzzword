@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" class="is-popup">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buzzword preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>/*SIDEBAR_CSS*/</style>
+<style>
+  /* Fake Google Docs around the real sidebar. */
+  html, body { height: 100%; }
+  body.preview { margin: 0; background: #f8f9fa; height: 100vh; }
+  .doc-pane { overflow: auto; padding: 24px 16px 60px; }
+  .doc-toolbar { max-width: 816px; margin: 0 auto 12px; display: flex; gap: 8px; align-items: center; font: 13px Arial, sans-serif; color: #444; flex-wrap: wrap; }
+  .doc-toolbar button { font: 13px Arial, sans-serif; border: 1px solid #c4c7c5; background: #fff; border-radius: 16px; padding: 4px 12px; cursor: pointer; }
+  .doc-toolbar .spacer { flex: 1; }
+  .page { max-width: 816px; margin: 0 auto; background: #fff; box-shadow: 0 1px 3px rgba(60,64,67,.3); padding: 56px 72px; font: 11pt/1.5 Arial, sans-serif; color: #202124; }
+  .page h1 { font: 400 26pt Arial, sans-serif; color: #1f4e8c; text-align: center; margin: 0; }
+  .page .year { text-align: center; color: #666; margin: 0 0 18px; }
+  .page .box { border: 1px solid #000; background: #cfe2f3; padding: 6px 8px; font-weight: 700; margin: 12px 0; }
+  .page .section { text-decoration: underline; margin: 18px 0 0; }
+  .page .instruction { font-style: italic; margin: 0 0 12px; }
+  .page p { margin: 0 0 11pt; }
+  .sugg { position: relative; }
+  .sugg del { color: #188038; text-decoration: line-through; }
+  .sugg ins { color: #188038; text-decoration: none; border-bottom: 1px solid #188038; }
+  .sugg-actions { display: none; position: absolute; left: 0; top: -26px; background: #fff; border: 1px solid #dadce0; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.2); white-space: nowrap; z-index: 2; }
+  .sugg:hover .sugg-actions, .sugg:focus-within .sugg-actions { display: inline-flex; }
+  .sugg-actions button { border: 0; background: none; padding: 2px 7px; cursor: pointer; font-size: 13px; }
+  .flash { background: #fde293; transition: background .3s; }
+  .doc-pane { height: 100vh; }
+  @media (max-width: 760px) { .page { padding: 24px 16px; } }
+</style>
+</head>
+<body class="preview">
+  <div class="doc-pane">
+    <div class="doc-toolbar">
+      <strong>Preview: Jazz Festival Article Draft</strong>
+      <span class="spacer"></span>
+      <span id="pending-count">No suggestions</span>
+      <button id="accept-all">Accept all</button>
+      <button id="reject-all">Reject all</button>
+      <button id="reset-doc">Reset draft</button>
+    </div>
+    <div class="page">
+      <h1>Article Draft</h1>
+      <p class="year">2026-2027</p>
+      <div class="box">Title: Burlingame performs alongside local musicians and schools<br>Byline: Elena Yu</div>
+      <p class="section">Article Draft</p>
+      <p class="instruction">Write your article here, do not indent and press enter instead.</p>
+      <div id="fake-doc-story"></div>
+      <p class="section">Otter link + Notes</p>
+      <div class="box">Otter Links: (interview recordings)</div>
+    </div>
+  </div>
+  <script>/*MOCK_JS*/</script>
+  <script>/*SIDEBAR_JS*/</script>
+</body>
+</html>

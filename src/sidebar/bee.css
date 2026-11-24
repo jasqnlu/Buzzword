@@ -1,0 +1,49 @@
+:root, :host {
+  --b-red: #e0262d;
+  --honey: #f5b301;
+}
+
+/* ------------------------------------------------------------ the bee */
+
+.bee .bee-fill { fill: var(--honey); }
+.bee .bee-outline, .bee .bee-outline-thick { fill: none; stroke: #000; stroke-width: 3; }
+.bee .bee-fill.bee-outline-thick { fill: var(--honey); }
+.bee .bee-stripe, .bee .bee-ink, .bee .bee-stinger { fill: #000; }
+.bee .bee-shine { fill: #fff; }
+.bee .bee-cheek { fill: var(--b-red); opacity: .45; }
+.bee .bee-line, .bee .bee-antenna { fill: none; stroke: #000; stroke-width: 2.4; stroke-linecap: round; }
+.bee .bee-line-thick { fill: none; stroke: #000; stroke-width: 3.2; stroke-linecap: round; }
+.bee .wing { fill: #eaf4fb; stroke: #000; stroke-width: 2.4; }
+.bee .pen-slit { stroke: #fff; stroke-width: 1.3; }
+.bee .pen-hole { fill: #fff; }
+.bee .pen-band { fill: var(--b-red); }
+.bee .pen-badge { fill: var(--b-red); stroke: #000; stroke-width: 2; }
+.bee .pen-b {
+  fill: #000;
+  font: 700 13px/1 Georgia, 'Times New Roman', serif;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.bee .eyes-happy, .bee .bee-sparkle { display: none; }
+.bee .bee-sparkle { fill: var(--honey); stroke: #000; stroke-width: 1.5; stroke-linejoin: round; }
+
+.bee.is-ready .eyes-open { display: none; }
+.bee.is-ready .eyes-happy, .bee.is-ready .bee-sparkle { display: inline; }
+
+.bee .wing { transform-box: fill-box; transform-origin: 50% 100%; }
+.bee .bee-pen { transform-box: view-box; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bee.is-checking .wing-front { animation: flutter .12s ease-in-out infinite alternate; }
+  .bee.is-checking .wing-back { animation: flutter .12s ease-in-out .06s infinite alternate; }
+  .bee.is-checking .bee-pen, .bee.is-checking .bee-arms { animation: scribble .5s ease-in-out infinite; }
+  .bee.is-ready .bee-sparkle { animation: twinkle 1.2s ease-in-out 2; transform-box: fill-box; transform-origin: center; }
+}
+@keyframes flutter { from { transform: scaleY(1); } to { transform: scaleY(.55); } }
+@keyframes scribble {
+  0%, 100% { translate: 0 0; }
+  25% { translate: -2px 1px; }
+  50% { translate: 1px 2px; }
+  75% { translate: 2px -1px; }
+}
+@keyframes twinkle { 50% { opacity: .2; scale: .7; } }

@@ -1,0 +1,22 @@
+{
+  "name": "buzzword",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AP and house style checker for The Burlingame B, as a Google Docs add-on",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "push": "npm run build && clasp push --force",
+    "preview": "npm run build && open preview/index.html"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.7",
+    "@types/google-apps-script": "^2.0.15",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.1"
+  }
+}
