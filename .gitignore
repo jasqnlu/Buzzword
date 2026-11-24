@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.playwright-mcp/
+preview/index.html
+extension-key.pem
+dist-extension/
+preview/buzz-icon.svg
