@@ -1,0 +1,236 @@
+/* Buzzword sidebar. Google Docs gives sidebars a fixed 300px column. */
+
+:root {
+  --b-red: #e0262d;       /* The Burlingame B logo red */
+  --b-red-ink: #b3161c;   /* red for small text, passes contrast on white */
+  --ink: #202124;         /* Google Docs body text */
+  --muted: #5f6368;
+  --rule: #e2e2e0;
+  --paper: #ffffff;
+  --honey: #f5b301;       /* Buzz's yellow */
+  --honey-wash: #fff6d6;
+  --sans: 'Libre Franklin', Arial, sans-serif;
+  --serif: 'Source Serif 4', Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 13px/1.45 var(--sans);
+}
+
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--b-red); outline-offset: 2px; }
+
+.app { padding: 14px 14px 28px; }
+
+/* ------------------------------------------------------------ header */
+
+.masthead {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.masthead .bee { width: 76px; height: auto; display: block; }
+.wordmark {
+  margin: 0;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.tagline {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tagline img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 42% 50%;
+}
+
+/* ------------------------------------------------------------ actions */
+
+.actions { display: grid; gap: 8px; }
+
+.btn {
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.btn-primary { background: var(--b-red); color: #fff; }
+.btn-primary:hover { background: var(--b-red-ink); }
+.btn-secondary { background: #fff; border: 1px solid #c8c8c6; }
+.btn-secondary:hover { background: #f6f6f4; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.btn-hint { margin: -2px 0 0; color: var(--muted); font-size: 11.5px; }
+
+/* ------------------------------------------------------------ status */
+
+.status {
+  margin: 18px 0 6px;
+  padding: 12px 12px 12px 14px;
+  border-left: 3px solid var(--ink);
+  background: #f7f7f5;
+}
+.status p { margin: 0; }
+.status .headline { font-weight: 700; font-size: 15px; line-height: 1.3; }
+.status .detail { margin-top: 4px; color: var(--muted); font-size: 12px; }
+
+.status.is-ready { border-left-color: var(--honey); background: var(--honey-wash); }
+.status.is-error { border-left-color: var(--b-red); background: #fdeeee; }
+
+.empty {
+  margin: 18px 0 0;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------ issue lists */
+
+.group { margin-top: 20px; }
+.group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--ink);
+  background: none;
+  border-top: 0; border-left: 0; border-right: 0;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+.group-head h2 { margin: 0; font-size: 13px; font-weight: 700; }
+.group-head .count { color: var(--muted); font-size: 12px; }
+.group-head .chev { transition: transform .15s ease; display: inline-block; margin-left: 6px; }
+.group.is-collapsed .chev { transform: rotate(-90deg); }
+.group.is-collapsed .cards { display: none; }
+.group-note { margin: 6px 0 0; color: var(--muted); font-size: 11.5px; }
+
+.cards { list-style: none; margin: 0; padding: 0; }
+
+.card {
+  padding: 12px 0 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+.card-title { margin: 0; font-weight: 600; font-size: 13px; }
+.pack {
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+.pack-house { color: var(--b-red-ink); border-color: #f1c4c6; }
+
+/* The snippet reads like a copy editor's pencil marks on the draft. */
+.snippet {
+  margin: 6px 0 6px;
+  font: 14px/1.55 var(--serif);
+  color: #3c4043;
+  overflow-wrap: anywhere;
+}
+.snippet del {
+  color: var(--b-red-ink);
+  text-decoration: line-through;
+  text-decoration-color: var(--b-red);
+  text-decoration-thickness: 1.5px;
+}
+.snippet ins {
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  background: linear-gradient(transparent 62%, var(--honey-wash) 62%);
+}
+.snippet ins::before {
+  content: '‸';
+  color: var(--b-red);
+  font-weight: 400;
+  margin: 0 1px 0 2px;
+}
+.snippet mark {
+  background: var(--honey-wash);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline wavy var(--b-red);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+.snippet .space { color: var(--b-red); }
+
+.reason { margin: 0; font-size: 12.5px; }
+.hint { margin: 2px 0 0; font-size: 12px; color: var(--b-red-ink); }
+
+.note-line { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+
+/* In the extension popup, the floating bee is the mascot, so the header drops its own. */
+.is-popup .masthead { grid-template-columns: 1fr; padding-right: 30px; margin-bottom: 12px; }
+.is-popup .masthead .bee { display: none; }
+
+.why {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  background: #f7f7f5;
+  font-size: 12px;
+  color: #3c4043;
+}
+.why[hidden] { display: none; }
+
+.card-actions { display: flex; flex-wrap: wrap; gap: 2px 12px; margin-top: 6px; }
+.link {
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: #c8c8c6;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.link:hover { text-decoration-color: var(--ink); }
+.link-strong { color: var(--b-red-ink); text-decoration-color: currentColor; }
+
+.card.is-done { opacity: .55; }
+.card.is-done .card-actions { display: none; }
+
+/* ------------------------------------------------------------ settings */
+
+.settings { margin-top: 26px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.settings summary { cursor: pointer; font-weight: 600; font-size: 12.5px; }
+.settings fieldset { border: 0; padding: 0; margin: 12px 0 0; }
+.settings legend { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.settings label { display: flex; gap: 6px; align-items: baseline; font-size: 12px; margin: 3px 0; }
+.settings .note { color: var(--muted); font-size: 11.5px; margin: 2px 0 0 20px; }
+
+.meta { margin-top: 18px; color: var(--muted); font-size: 11.5px; }
+
+/* The bee's own styles live in bee.css (shared with the extension's floating button). */
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
