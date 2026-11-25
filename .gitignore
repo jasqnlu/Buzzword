@@ -5,3 +5,6 @@ preview/index.html
 extension-key.pem
 dist-extension/
 preview/buzz-icon.svg
+release/
+*.zip
+.DS_Store

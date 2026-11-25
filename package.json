@@ -10,7 +10,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "push": "npm run build && clasp push --force",
-    "preview": "npm run build && open preview/index.html"
+    "preview": "npm run build && open preview/index.html",
+    "package": "npm run build && node scripts/package.mjs"
   },
   "devDependencies": {
     "@types/chrome": "^0.3.7",
