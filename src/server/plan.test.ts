@@ -42,7 +42,7 @@ function makeDoc(items: Item[]): DocsDocument {
 const TEMPLATE = (story: Item[]): DocsDocument =>
   makeDoc([
     'Article Draft',
-    { table: ['Title: Jazz on Oct. 5th', 'Byline: Elena Yu'] },
+    { table: ['Title: Jazz on Oct. 5th', 'Byline: Jordan Lee'] },
     'Article Draft',
     'Write your article here, do not indent and press enter instead.',
     ...story,
