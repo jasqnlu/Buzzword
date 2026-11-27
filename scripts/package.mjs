@@ -31,9 +31,10 @@ execFileSync('zip', ['-r', '-X', '-q', zipPath, '.'], { cwd: staging });
 await rm(staging, { recursive: true, force: true });
 
 console.log(`Packed release/buzzword-${manifest.version}.zip (manifest without "key").`);
-if (manifest.oauth2?.client_id?.startsWith('MISSING')) {
+const config = JSON.parse(await readFile(r('extension.config.json'), 'utf8'));
+if (!config.webClientId) {
   console.warn(
-    'Warning: no OAuth client ID yet, so Google sign-in will not work in this build.\n' +
-    'Fine for a first draft upload to get the store item ID. Do not submit it for review.',
+    'Warning: no webClientId in extension.config.json, so Google sign-in will not work in this build.\n' +
+    'Do not submit it for review.',
   );
 }

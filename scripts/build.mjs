@@ -39,13 +39,10 @@ const manifest = {
   background: { service_worker: 'background.js' },
   content_scripts: [{ matches: ['https://docs.google.com/document/d/*'], js: ['content.js'], run_at: 'document_idle' }],
   web_accessible_resources: [{ resources: ['panel.html'], matches: ['https://docs.google.com/*'] }],
-  oauth2: {
-    client_id: config.oauthClientId || 'MISSING-see-README.apps.googleusercontent.com',
-    scopes: ['https://www.googleapis.com/auth/documents'],
-  },
 };
 await writeFile(r('dist-extension/manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
-await writeFile(r('dist-extension/background.js'), await bundle('src/extension/background.ts'));
+// Google sign-in uses a "Web application" OAuth client (see src/extension/auth.ts).
+await writeFile(r('dist-extension/background.js'), `var WEB_CLIENT_ID = ${JSON.stringify(config.webClientId ?? '')};\n${await bundle('src/extension/background.ts')}`);
 await writeFile(r('dist-extension/content.js'), `var BEE_CSS = ${JSON.stringify(beeCss)};\n${await bundle('src/extension/content.ts')}`);
 // Extension pages can't run inline scripts, so the panel loads panel.js. The bridge must run first.
 await writeFile(r('dist-extension/panel.js'), `${await bundle('src/extension/bridge.ts')}\n${appJs}`);
@@ -142,4 +139,4 @@ await writeFile(
     .replace('/*SIDEBAR_JS*/', () => appJs),
 );
 
-console.log(`Built dist-extension/ (ID ${config.extensionId}${config.oauthClientId ? '' : ', no OAuth client ID yet'}), dist/ and preview/index.html`);
+console.log(`Built dist-extension/ (ID ${config.extensionId}${config.webClientId ? '' : ', no web OAuth client ID yet'}), dist/ and preview/index.html`);

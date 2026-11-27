@@ -23,6 +23,7 @@ Optional: a "How to use" section (open a draft, click the bee, check whole story
 ## Facts the site must get right
 The Web Store reviewers compare the site, the store's Privacy tab and the code, so these must match exactly:
 - Text is checked **in the browser**. It's sent **only to Google's Docs API**. There is **no Buzzword server**, no analytics and no selling or sharing of data.
+- Google sign-in uses Google's own sign-in page. The access token (about 1 hour) is kept only in Chrome's session storage, which is cleared when Chrome closes.
 - Saved in browser storage: settings, the document ID, suggestion IDs, **hashes** of rejected or ignored flags, and accept/reject counts per rule. **Never document text.**
 - Permissions: `identity` (Google sign-in), `storage`, `clipboardRead` (Check selection fallback, only on click), `clipboardWrite` ("Show in doc" copies the phrase), host `docs.googleapis.com`, content script on `docs.google.com/document/*`.
 - Google scope: `https://www.googleapis.com/auth/documents`.
@@ -84,7 +85,7 @@ Buzzword never saves the text of your documents. To delete everything Buzzword h
 
 #### Google sign-in
 
-Buzzword uses Chrome's Google sign-in to get permission to read and suggest edits to your Google Docs (the `documents` scope). Chrome keeps the sign-in token, and Buzzword only uses it to call the Google Docs API.
+Buzzword opens Google's own sign-in page to get permission to read and suggest edits to your Google Docs (the `documents` scope). Buzzword never sees your password. Google gives Buzzword an access token that lasts about an hour. Buzzword keeps it only in Chrome's temporary session storage, which is cleared when Chrome closes, and only uses it to call the Google Docs API.
 
 Buzzword's use of information received from Google APIs follows the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.
 

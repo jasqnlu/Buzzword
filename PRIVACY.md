@@ -1,6 +1,6 @@
 # Buzzword privacy policy
 
-*Effective Nov. 24, 2026*
+*Effective Nov. 27, 2026*
 
 Buzzword is a Chrome extension that checks Google Docs drafts against AP style and The Burlingame B's house style. It was made for the staff of The Burlingame B.
 
@@ -27,7 +27,7 @@ Buzzword never saves the text of your documents. To delete everything Buzzword h
 
 ## Google sign-in
 
-Buzzword uses Chrome's Google sign-in to get permission to read and suggest edits to your Google Docs (the `documents` scope). Chrome keeps the sign-in token, and Buzzword only uses it to call the Google Docs API.
+Buzzword opens Google's own sign-in page to get permission to read and suggest edits to your Google Docs (the `documents` scope). Buzzword never sees your password. Google gives Buzzword an access token that lasts about an hour. Buzzword keeps it only in Chrome's temporary session storage, which is cleared when Chrome closes, and only uses it to call the Google Docs API.
 
 Buzzword's use of information received from Google APIs follows the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.
 

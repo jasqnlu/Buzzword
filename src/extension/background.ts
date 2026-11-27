@@ -6,6 +6,10 @@ import { DEFAULT_SETTINGS, type Settings } from '../engine/types';
 import { findTextRange, textAt, type DocsDocument } from '../server/flatten';
 import { EMPTY_STORE, buildSuggestRequests, collectSuggestionIds, finishCheck, planCheck, type DocStore } from '../server/plan';
 import type { CardIssue, CheckMode, CheckResult, InitialState } from '../shared/types';
+import { clearToken, getToken } from './auth';
+
+/** The "Web application" OAuth client ID, put in by scripts/build.mjs from extension.config.json. */
+declare const WEB_CLIENT_ID: string;
 
 const DOCS_API = 'https://docs.googleapis.com/v1/documents/';
 
@@ -96,14 +100,15 @@ async function batchUpdate(docId: string, requests: object[], revisionId?: strin
 }
 
 async function callDocs(method: 'GET' | 'POST', path: string, body?: unknown, retried = false): Promise<unknown> {
-  const token = await authToken(true);
+  const token = await getToken(WEB_CLIENT_ID);
+  console.log(`Buzzword: Docs API ${method} ${path.split('?')[0]}…`);
   const res = await fetch(DOCS_API + path, {
     method,
     headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
     body: body ? JSON.stringify(body) : undefined,
   });
   if (res.status === 401 && !retried) {
-    await chrome.identity.removeCachedAuthToken({ token });
+    await clearToken();
     return callDocs(method, path, body, true);
   }
   const text = await res.text();
@@ -115,17 +120,6 @@ async function callDocs(method: 'GET' | 'POST', path: string, body?: unknown, re
     throw new Error(`Google Docs returned an error (${res.status}). Try again; if it keeps happening, tell the Buzzword maintainer.`);
   }
   return JSON.parse(text);
-}
-
-async function authToken(interactive: boolean): Promise<string> {
-  try {
-    const result = await chrome.identity.getAuthToken({ interactive });
-    const token = typeof result === 'string' ? result : result?.token;
-    if (!token) throw new Error('no token');
-    return token;
-  } catch {
-    throw new Error('Buzzword needs permission to edit your doc. Click Check again and approve the Google sign-in.');
-  }
 }
 
 // ------------------------------------------------------------------ storage
