@@ -115,8 +115,11 @@ async function callDocs(method: 'GET' | 'POST', path: string, body?: unknown, re
   if (!res.ok) {
     console.error(`Docs API ${method} ${path} -> ${res.status}: ${text}`);
     if (res.status === 400 && /revision/i.test(text)) throw new Error('The doc changed while Buzzword was checking it. Run the check again.');
-    if (res.status === 403) throw new Error('Buzzword can’t edit this doc. You need edit access, and you need to be signed in to Chrome with the same Google account.');
-    if (res.status === 404) throw new Error('Buzzword can’t open this doc with your Google account. Make sure Chrome is signed in to the account that can edit it.');
+    if (res.status === 403 && /SERVICE_DISABLED|has not been used in project|is disabled/.test(text)) {
+      throw new Error('Buzzword’s Google Docs connection is switched off (the Google Docs API isn’t enabled for its Google Cloud project). Tell the Buzzword maintainer.');
+    }
+    if (res.status === 403) throw new Error('Buzzword can’t edit this doc with the Google account you signed in with. Ask for edit access, or sign in with the account that owns the doc.');
+    if (res.status === 404) throw new Error('Buzzword can’t open this doc with the Google account you signed in with. Make sure that account can edit it.');
     throw new Error(`Google Docs returned an error (${res.status}). Try again; if it keeps happening, tell the Buzzword maintainer.`);
   }
   return JSON.parse(text);
