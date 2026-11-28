@@ -2,7 +2,7 @@
 // It runs the real engine and the real planning code (src/server/plan.ts)
 // against a fake Article Draft doc holding the jazz festival story.
 
-import { JAZZ_DRAFT } from '../src/engine/fixtures/jazz';
+import { SAMPLE_DRAFT } from '../src/engine/fixtures/sample';
 import { DEFAULT_SETTINGS, type Settings } from '../src/engine/types';
 import type { DocsDocument, DocsStructuralElement } from '../src/server/flatten';
 import { EMPTY_STORE, collectSuggestionIds, finishCheck, planCheck, type DocStore } from '../src/server/plan';
@@ -17,7 +17,7 @@ const HEADER = ['Article Draft', '2026-2027', 'Article Draft', 'Write your artic
 const FOOTER = ['Otter link + Notes', 'Otter Links: (interview recordings)'];
 
 const model = {
-  story: JAZZ_DRAFT + '\n', // plain story text, accepted changes applied
+  story: SAMPLE_DRAFT + '\n', // plain story text, accepted changes applied
   pending: [] as Pending[], // suggestions waiting for accept/reject, in story offsets
   store: JSON.parse(JSON.stringify(EMPTY_STORE)) as DocStore,
   settings: { ...DEFAULT_SETTINGS } as Settings,
@@ -165,7 +165,7 @@ document.addEventListener('click', (e) => {
   if (t.id === 'accept-all') resolve('all', true);
   if (t.id === 'reject-all') resolve('all', false);
   if (t.id === 'reset-doc') {
-    model.story = JAZZ_DRAFT + '\n';
+    model.story = SAMPLE_DRAFT + '\n';
     model.pending = [];
     model.store = JSON.parse(JSON.stringify(EMPTY_STORE));
     renderDoc();

@@ -6,6 +6,10 @@ import { DEFAULT_SETTINGS, type Settings } from '../engine/types';
 import { findTextRange, textAt, type DocsDocument } from '../server/flatten';
 import { EMPTY_STORE, buildSuggestRequests, collectSuggestionIds, finishCheck, planCheck, type DocStore } from '../server/plan';
 import type { CardIssue, CheckMode, CheckResult, InitialState } from '../shared/types';
+import { clearToken, getToken } from './auth';
+
+/** The "Web application" OAuth client ID, put in by scripts/build.mjs from extension.config.json. */
+declare const WEB_CLIENT_ID: string;
 
 const DOCS_API = 'https://docs.googleapis.com/v1/documents/';
 
@@ -96,36 +100,29 @@ async function batchUpdate(docId: string, requests: object[], revisionId?: strin
 }
 
 async function callDocs(method: 'GET' | 'POST', path: string, body?: unknown, retried = false): Promise<unknown> {
-  const token = await authToken(true);
+  const token = await getToken(WEB_CLIENT_ID);
+  console.log(`Buzzword: Docs API ${method} ${path.split('?')[0]}…`);
   const res = await fetch(DOCS_API + path, {
     method,
     headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
     body: body ? JSON.stringify(body) : undefined,
   });
   if (res.status === 401 && !retried) {
-    await chrome.identity.removeCachedAuthToken({ token });
+    await clearToken();
     return callDocs(method, path, body, true);
   }
   const text = await res.text();
   if (!res.ok) {
     console.error(`Docs API ${method} ${path} -> ${res.status}: ${text}`);
     if (res.status === 400 && /revision/i.test(text)) throw new Error('The doc changed while Buzzword was checking it. Run the check again.');
-    if (res.status === 403) throw new Error('Buzzword can’t edit this doc. You need edit access, and you need to be signed in to Chrome with the same Google account.');
-    if (res.status === 404) throw new Error('Buzzword can’t open this doc with your Google account. Make sure Chrome is signed in to the account that can edit it.');
+    if (res.status === 403 && /SERVICE_DISABLED|has not been used in project|is disabled/.test(text)) {
+      throw new Error('Buzzword’s Google Docs connection is switched off (the Google Docs API isn’t enabled for its Google Cloud project). Tell the Buzzword maintainer.');
+    }
+    if (res.status === 403) throw new Error('Buzzword can’t edit this doc with the Google account you signed in with. Ask for edit access, or sign in with the account that owns the doc.');
+    if (res.status === 404) throw new Error('Buzzword can’t open this doc with the Google account you signed in with. Make sure that account can edit it.');
     throw new Error(`Google Docs returned an error (${res.status}). Try again; if it keeps happening, tell the Buzzword maintainer.`);
   }
   return JSON.parse(text);
-}
-
-async function authToken(interactive: boolean): Promise<string> {
-  try {
-    const result = await chrome.identity.getAuthToken({ interactive });
-    const token = typeof result === 'string' ? result : result?.token;
-    if (!token) throw new Error('no token');
-    return token;
-  } catch {
-    throw new Error('Buzzword needs permission to edit your doc. Click Check again and approve the Google sign-in.');
-  }
 }
 
 // ------------------------------------------------------------------ storage
